@@ -144,8 +144,6 @@ void SaturatorAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
     const float crush = params._crush;
     const float mix = params._mix;
 
-   // const float NUM = 2.3283e-10; // 1/qLevels
-
     for (int i = 0; i < buffer.getNumSamples(); ++i) {
        
         float dryA = in1[i]; // dry samples read in
@@ -153,12 +151,9 @@ void SaturatorAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
 
         // processing -----------------------------
 
-        float aa = (float)std::tanh(1.5f * dryA); // overdrive function
-        float bb = (float)std::tanh(1.5f * dryB);
-
         // overdriven signal
-        float wetA = drive * aa + (1.0f - drive) * dryA; 
-        float wetB = drive * bb + (1.0f - drive) * dryB;
+        float wetA = (float)std::tanh(drive * dryA); // overdrive function
+        float wetB = (float)std::tanh(drive * dryB);
 
         // bit crush overdriven samples
         // - for simplicity, bit-depth and rate are fixed

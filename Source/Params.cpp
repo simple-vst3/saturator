@@ -54,8 +54,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout Params::createParameterLayou
 
 void Params::update() noexcept
 {
+    // convert from range [0,100] - > [1, 3]
+    // function: y = x/50 + 1
+    _drive = driveParam->get() * 0.02f + 1;
+    
     // convert these from range [0,100] - > [0, 1]
-    _drive = driveParam->get() * 0.01f;
     _crush = crushParam->get() * 0.01f;
     _mix = mixParam->get() * 0.01f; 
 
